@@ -1,0 +1,21 @@
+{
+  "name": "grunt-github-release-asset",
+  "version": "0.0.1",
+  "description": "Upload assets for Github releases",
+  "scripts": {
+    "test": "grunt test -v"
+  },
+  "keywords": [
+    "gruntplugin",
+    "github"
+  ],
+  "author": "Dominic Bartl",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "request": "^2.45.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  }
+}
