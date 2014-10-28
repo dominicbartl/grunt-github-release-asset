@@ -30,6 +30,10 @@ function auth() {
 	});
 }
 
+function time() {
+	return new Date().toString();
+}
+
 exports.githubAsset = {
 	setUp: function(done) {
 
@@ -40,11 +44,17 @@ exports.githubAsset = {
 
 		auth().getLatestTag(function (err, response, body) {
 			var tag = JSON.parse(body)[0];
-			console.log(tag);
 			test.equal(tag.name, 'test', 'Latest tag should be test');
 			test.done();
 		});
-
-		
+	},
+	testCreateRelease: function (test) {
+		test.expect(1);
+		var name = 'A release ' + time()
+		auth().createRelease('test', name, 'A release description ' + time(), function (err, response, body) {
+			var body = JSON.parse(body);
+			test.equal(body.name, name, 'The release should be named ' + name);
+			test.done();
+		});
 	}
 };

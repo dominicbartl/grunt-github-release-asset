@@ -15,7 +15,7 @@ var Github = function (options) {
 }
 
 Github.prototype.createRelease = function (tag, name, description, callback) {
-	var url = this.getUrl('releases');
+	var url = this.getRepoUrl('releases');
 	var data = {
 		tag_name: tag,
 		name: name ? name : tag,
