@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('githubAsset', 'Attach assets to Girhub releases.', function (args) {
 		// Merge task-specific and/or target-specific options with these defaults.
 		var options = this.options({});
-
+		console.log(options);
 		var hub = new Github({
 			credentials: {
 			},
