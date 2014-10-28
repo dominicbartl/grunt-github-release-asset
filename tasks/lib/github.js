@@ -26,18 +26,23 @@ var Github = function (options) {
 	this.headers = {
 		'User-Agent': 'request/grunt-github-release-asset'
 	};
-
-	if (!options.credentials) {
-
-	}
 	var authStr;
-	if (options.credentials.token) {
-		authStr = options.credentials.token + ':' + '';
-	} else if(options.credentials.username && options.credentials.password) {
-		authStr = options.credentials.username + ':' + options.credentials.password;
+	if (options.credentials) {
+		if (options.credentials.token) {
+			authStr = options.credentials.token + ':' + '';
+		} else if(options.credentials.username && options.credentials.password) {
+			authStr = options.credentials.username + ':' + options.credentials.password;
+		}
+	}
+	if (!authStr) {
+		throw new Error('Please supply a token or username & password to authorize yourself.');
 	}
 	this.headers['Authorization'] = 'Basic ' + (new Buffer(authStr).toString('base64'))
-	this.repoPath = options.repo.split(':')[1].split('.')[0].toLowerCase();
+	try {
+		this.repoPath = options.repo.split(':')[1].split('.')[0].toLowerCase();
+	} catch(err) {
+		throw new Error('Repository url isn\'t provided or isn\'t valid.');
+	}
 }
 
 Github.prototype.createRelease = function (tag, name, description, callback) {
@@ -56,7 +61,7 @@ Github.prototype.getReleases = function (callback) {
 
 Github.prototype.getLatestTag = function (callback) {
 	var url = this.getRepoUrl('tags');
-	this._request('GET', url, undefined, callback);
+	this._request('GET', url, undefined, callbackWrapper(callback));
 };
 
 Github.prototype.uploadAsset = function (releaseId, file, callback) {
@@ -109,4 +114,16 @@ Github.prototype.getRepoUrl = function (endpoint) {
 Github.prototype.getRepoUploadUrl = function (endpoint) {
 	return this.getUrl('uploads.github.com/repos/' + this.repoPath + '/' + endpoint);
 };
+
+function callbackWrapper(callback) {
+	return function (err, response, body) {
+		if(err) {
+			throw err;
+		} else if (response.statusCode === 401) {
+			throw "Not authorized!";
+		} else {
+			callback(body);
+		}
+	}
+}
 module.exports = Github;

@@ -36,12 +36,11 @@ function time() {
 
 exports.githubAsset = {
 	setUp: function(done) {
-
 		done();
 	},
 	testGetLatestTag: function (test) {
 		test.expect(1);
-		auth().getLatestTag(function (err, response, body) {
+		auth().getLatestTag(function (body) {
 			var tag = JSON.parse(body)[0];
 			test.equal(tag.name, 'test', 'Latest tag should be test');
 			test.done();
@@ -89,7 +88,7 @@ exports.githubAsset = {
 		var name = 'A release ' + time();
 		var file = process.cwd() + '/test/phantom.zip'
 		auth().createReleaseWithAsset('test', name, 'A release description ' + time(), file, function (err, response, body) {
-			console.log(arguments);
+			
 			test.done();
 		});
 	}

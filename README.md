@@ -37,17 +37,22 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.credentials
+Type: `object`
+Token authentication
+    {
+        token: '...'
+    }
+Username & password authentication
+    {
+      username: '...',
+      password: '...'
+    }
+
+#### options.repo
 Type: `String`
-Default value: `',  '`
 
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
+The git url of the repository. Must be git@github.com:user/repo.git
 
 ### Usage Examples
 
