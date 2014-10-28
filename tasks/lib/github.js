@@ -15,7 +15,8 @@ var path = require('path');
 * options: {
 	credentials: {
 		username: '...',
-		password: '...'
+		password: '...',
+		token: '...'
 	},
 	repo: 'git@github.com:user/repo.git
 }
@@ -61,7 +62,7 @@ Github.prototype.getReleases = function (callback) {
 
 Github.prototype.getLatestTag = function (callback) {
 	var url = this.getRepoUrl('tags');
-	this._request('GET', url, undefined, callbackWrapper(callback));
+	this._request('GET', url, undefined, callback);
 };
 
 Github.prototype.uploadAsset = function (releaseId, file, callback) {
@@ -79,16 +80,12 @@ Github.prototype.uploadAsset = function (releaseId, file, callback) {
 		url: url,
 		headers: this.headers,
 		formData: formData
-	}, callback);
+	}, callbackWrapper(callback));
 };
 
 Github.prototype.createReleaseWithAsset = function (tag, name, description, file, callback) {
 	var self = this;
-	this.createRelease(tag, name, description, function (err, response, body) {
-		if (err || response.statusCode >= 400) {
-			callback(err, response);
-			return;
-		}
+	this.createRelease(tag, name, description, function (body) {
 		body = JSON.parse(body);
 		self.uploadAsset(body.id, file, callback);
 	});
@@ -100,7 +97,7 @@ Github.prototype._request = function (method, url, body, callback) {
 		url: url,
 		headers: this.headers,
 		body: body ? JSON.stringify(body) : undefined
-	}, callback);
+	}, callbackWrapper(callback));
 }
 
 Github.prototype.getUrl = function (endpoint) {
@@ -120,7 +117,7 @@ function callbackWrapper(callback) {
 		if(err) {
 			throw err;
 		} else if (response.statusCode === 401) {
-			throw "Not authorized!";
+			throw new Error("Not authorized, check your credentials.");
 		} else {
 			callback(body);
 		}
