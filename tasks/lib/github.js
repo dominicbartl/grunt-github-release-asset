@@ -11,9 +11,33 @@ var request = require('request');
 var fs = require('fs');
 var mime = require('mime');
 var path = require('path');
-
+/*
+* options: {
+	credentials: {
+		username: '...',
+		password: '...'
+	},
+	repo: 'git@github.com:user/repo.git
+}
+*
+*/
 var Github = function (options) {
 	this.options = options;
+	this.headers = {
+		'User-Agent': 'request/grunt-github-release-asset'
+	};
+
+	if (!options.credentials) {
+
+	}
+	var authStr;
+	if (options.credentials.token) {
+		authStr = options.credentials.token + ':' + '';
+	} else if(options.credentials.username && options.credentials.password) {
+		authStr = options.credentials.username + ':' + options.credentials.password;
+	}
+	this.headers['Authorization'] = 'Basic ' + (new Buffer(authStr).toString('base64'))
+	this.repoPath = options.repo.split(':')[1].split('.')[0].toLowerCase();
 }
 
 Github.prototype.createRelease = function (tag, name, description, callback) {
@@ -23,57 +47,66 @@ Github.prototype.createRelease = function (tag, name, description, callback) {
 		name: name ? name : tag,
 		body: description
 	};
-	_request('POST', url, data, callback);
+	this._request('POST', url, data, callback);
 };
 
 Github.prototype.getReleases = function (callback) {
-	_request('GET', this.getRepoUrl('releases'), undefined, callback);
+	this._request('GET', this.getRepoUrl('releases'), undefined, callback);
 };
 
 Github.prototype.getLatestTag = function (callback) {
 	var url = this.getRepoUrl('tags');
-	_request('GET', url, undefined, callback);
+	this._request('GET', url, undefined, callback);
 };
 
 Github.prototype.uploadAsset = function (releaseId, file, callback) {
-	var url = this.getRepoUploadUrl('releases/' + releaseId);
+	var url = this.getRepoUploadUrl('releases/' + releaseId + '/assets');
 	var type = mime.lookup(file);
 	var name = path.basename(file);
 
-	url += '?name=' + name + '&contentType=' + type;
-	console.log(url);
-	var data = fs.readFileSync(file);
-	//fs.createReadStream(file).pipe(_request('POST', url, undefined, callback));
+	url += '?name=' + name;
+	var formData = {
+		fileData: fs.readFileSync(file)
+	};
+	//fs.createReadStream(file).pipe(this._request('POST', url, undefined, callback));
 	request({
 		method: 'POST',
 		url: url,
-		headers: {
-			'User-Agent': 'request'
-		},
-		body: data
+		headers: this.headers,
+		formData: formData
 	}, callback);
 };
 
-function _request(method, url, body, callback) {
+Github.prototype.createReleaseWithAsset = function (tag, name, description, file, callback) {
+	var self = this;
+	this.createRelease(tag, name, description, function (err, response, body) {
+		if (err || response.statusCode >= 400) {
+			callback(err, response);
+			return;
+		}
+		body = JSON.parse(body);
+		self.uploadAsset(body.id, file, callback);
+	});
+}
+
+Github.prototype._request = function (method, url, body, callback) {
 	return request({
 		method: method,
 		url: url,
-		headers: {
-			'User-Agent': 'request'
-		},
+		headers: this.headers,
 		body: body ? JSON.stringify(body) : undefined
 	}, callback);
 }
 
 Github.prototype.getUrl = function (endpoint) {
-	return 'https://' + this.options.credentials.username + ':' + this.options.credentials.password + '@' + endpoint;
+	return 'https://' + endpoint;
 }
 
 Github.prototype.getRepoUrl = function (endpoint) {
-	return this.getUrl('api.github.com/repos/' + this.options.credentials.username + '/' + this.options.repoName + '/' + endpoint);
+	return this.getUrl('api.github.com/repos/' + this.repoPath + '/' + endpoint);
 };
 
 Github.prototype.getRepoUploadUrl = function (endpoint) {
-	return this.getUrl('uploads.github.com/repos/' + this.options.credentials.username + '/' + this.options.repoName + '/' + endpoint);
+	return this.getUrl('uploads.github.com/repos/' + this.repoPath + '/' + endpoint);
 };
 module.exports = Github;

@@ -15,12 +15,9 @@ module.exports = function(grunt) {
 	// Please see the Grunt documentation for more information regarding task
 	// creation: http://gruntjs.com/creating-tasks
 
-	grunt.registerMultiTask('githubAsset', 'Attach assets to Girhub releases.', function (args) {
+	grunt.registerTask('githubAsset', 'Attach assets to Girhub releases.', function (args) {
 		// Merge task-specific and/or target-specific options with these defaults.
-		var options = this.options({
-			punctuation: '.',
-			separator: ', '
-		});
+		var options = this.options({});
 
 		var hub = new Github({
 			credentials: {

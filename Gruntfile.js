@@ -30,7 +30,10 @@ module.exports = function(grunt) {
 
 		// Configuration to be run (and then tested).
 		githubAsset: {
-
+			options: {
+				credentials: grunt.file.readJSON('credentials.json'),
+				repo: ''
+			}
 		},
 
 		// Unit tests.
