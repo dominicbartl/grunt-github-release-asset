@@ -38,7 +38,7 @@ exports.githubAsset = {
 	setUp: function(done) {
 		done();
 	},
-	/*testGetLatestTag: function (test) {
+	testGetLatestTag: function (test) {
 		test.expect(1);
 		auth().getLatestTag(function (body) {
 			var tag = JSON.parse(body)[0];
@@ -91,5 +91,5 @@ exports.githubAsset = {
 			
 			test.done();
 		});
-	}*/
+	}
 };

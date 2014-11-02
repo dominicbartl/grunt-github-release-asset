@@ -10,6 +10,7 @@
 
 
 var Github = require('./lib/github.js');
+var format = require("string-template");
 module.exports = function(grunt) {
 
 	// Please see the Grunt documentation for more information regarding task
@@ -17,16 +18,19 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('githubAsset', 'Attach assets to Girhub releases.', function (args) {
 		// Merge task-specific and/or target-specific options with these defaults.
-		var options = this.options({});
+		var options = this.options({
+			releaseName: '{tag}'
+		});
 		var hub = new Github(options);
 		if (!options.file) {
 			grunt.fail.fatal('No file specified.');
 		}
 
-		hub.createRelease('test', 'New Release', 'A description', function (){
+		var releaseName = format(options.releaseName, { tag: 'testx' });
+		console.log(releaseName);
+		/*hub.createRelease('test', 'New Release', 'A description', function (){
 			console.log(arguments);
-		});
-		
+		});*/
 	});
 
 };
