@@ -68,7 +68,7 @@ Github.prototype.getLatestTag = function (callback) {
 Github.prototype.uploadAsset = function (releaseId, file, callback) {
 	var url = this.getRepoUploadUrl('releases/' + releaseId + '/assets');
 	var type = mime.lookup(file);
-	var name = path.join(__dirname, file);
+	var name = path.basename(file);
 
 	url += '?name=' + name;
 	var formData = {
@@ -96,7 +96,8 @@ Github.prototype._request = function (method, url, body, callback) {
 		method: method,
 		url: url,
 		headers: this.headers,
-		body: body ? JSON.stringify(body) : undefined
+		body: body ? JSON.stringify(body) : undefined,
+		json: true,
 	}, callbackWrapper(callback));
 }
 
@@ -114,12 +115,10 @@ Github.prototype.getRepoUploadUrl = function (endpoint) {
 
 function callbackWrapper(callback) {
 	return function (err, response, body) {
-		if(err) {
-			throw err;
-		} else if (response.statusCode === 401) {
+		if (response.statusCode === 401) {
 			throw new Error("Not authorized, check your credentials.");
 		} else {
-			callback(body);
+			callback(err, body);
 		}
 	}
 }
