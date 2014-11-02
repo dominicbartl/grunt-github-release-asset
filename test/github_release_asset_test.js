@@ -38,7 +38,7 @@ exports.githubAsset = {
 	setUp: function(done) {
 		done();
 	},
-	testGetLatestTag: function (test) {
+	/*testGetLatestTag: function (test) {
 		test.expect(1);
 		auth().getLatestTag(function (body) {
 			var tag = JSON.parse(body)[0];
@@ -73,7 +73,7 @@ exports.githubAsset = {
 		});
 	},
 	testUploadAsset: function (test) {
-		var file = process.cwd() + '/test/phantom.zip';
+		var file = 'phantom.zip';
 		test.done();
 		return;
 		auth().uploadAsset(658652, file, function (err, response, body) {
@@ -86,10 +86,10 @@ exports.githubAsset = {
 	testCreateReleaseWithAsset: function (test) {
 		test.expect(0);
 		var name = 'A release ' + time();
-		var file = process.cwd() + '/test/phantom.zip'
+		var file = 'phantom.zip'
 		auth().createReleaseWithAsset('test', name, 'A release description ' + time(), file, function (err, response, body) {
 			
 			test.done();
 		});
-	}
+	}*/
 };

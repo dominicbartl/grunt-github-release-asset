@@ -32,8 +32,9 @@ module.exports = function(grunt) {
 		githubAsset: {
 			options: {
 				credentials: grunt.file.readJSON('credentials.json'),
-				repo: ''
-			}
+				repo: 'git@github.com:Bartinger/grunt-github-release-asset.git',
+				file: 'phantom.zip'
+			},
 		},
 
 		// Unit tests.
@@ -53,7 +54,7 @@ module.exports = function(grunt) {
 
 	// Whenever the "test" task is run, first clean the "tmp" dir, then run this
 	// plugin's task(s), then test the result.
-	grunt.registerTask('test', ['clean', /*'githubAsset',*/ 'nodeunit']);
+	grunt.registerTask('test', ['clean', 'githubAsset', 'nodeunit']);
 
 	// By default, lint and run all tests.
 	grunt.registerTask('default', ['jshint', 'test']);
