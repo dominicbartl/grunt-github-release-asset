@@ -37,7 +37,11 @@
 		"grunt": "~0.4.5"
 	},
 	"keywords": [
-		"gruntplugin"
+		"gruntplugin",
+		"github",
+		"release",
+		"asset",
+		"upload"
 	],
 	"dependencies": {
 		"async": "^0.9.0",
