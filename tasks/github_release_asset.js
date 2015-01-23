@@ -11,13 +11,15 @@
 
 var format = require('string-template');
 var async = require('async');
+var fs = require('fs');
 var Github = require('./lib/github.js');
+
 module.exports = function (grunt) {
 
 	// Please see the Grunt documentation for more information regarding task
 	// creation: http://gruntjs.com/creating-tasks
 
-	grunt.registerTask('githubAsset', 'Attach assets to Girhub releases.', function (args) {
+	grunt.registerTask('githubAsset', 'Create releases and attach assets on Girhub.', function (args) {
 		// Merge task-specific and/or target-specific options with these defaults.
 		var done = this.async();
 		var options = this.options({
@@ -30,7 +32,11 @@ module.exports = function (grunt) {
 		async.waterfall([
 
 			function (callback) {
-				hub.getLatestTag(callback);
+				if (fs.existsSync(options.file)) {
+					hub.getLatestTag(callback);
+				} else {
+					grunt.fail.fatal('File doesn\'t exist (' + options.file + ')');
+				}
 			},
 			function (body, callback) {
 				if (body.length === 0) {
