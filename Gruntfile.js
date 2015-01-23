@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 				repo: 'git@github.com:Bartinger/grunt-github-release-asset.git',
 				file: 'phantom.zip',
 				releaseName: 'Release {tag}'
-			},
+			}
 		},
 
 		// Unit tests.
