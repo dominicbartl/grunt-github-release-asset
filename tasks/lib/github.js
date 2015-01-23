@@ -97,7 +97,7 @@ Github.prototype._request = function (method, url, body, callback) {
 		method: method,
 		url: url,
 		headers: this.headers,
-		body: body ? JSON.stringify(body) : undefined,
+		body: body,
 		json: true,
 	}, callbackWrapper(callback));
 }

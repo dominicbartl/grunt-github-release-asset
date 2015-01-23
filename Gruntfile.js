@@ -33,7 +33,7 @@ module.exports = function(grunt) {
 			options: {
 				credentials: grunt.file.readJSON('credentials.json'),
 				repo: 'git@github.com:Bartinger/grunt-github-release-asset.git',
-				file: 'phantom.zip',
+				file: 'test/test-file.zip',
 				releaseName: 'Release {tag}'
 			}
 		},
