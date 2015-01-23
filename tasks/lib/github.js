@@ -11,6 +11,7 @@ var request = require('request');
 var fs = require('fs');
 var mime = require('mime');
 var path = require('path');
+
 /*
 * options: {
 	credentials: {
@@ -118,7 +119,19 @@ function callbackWrapper(callback) {
 		if (response.statusCode === 401) {
 			throw new Error("Not authorized, check your credentials.");
 		} else {
-			callback(err, body);
+			if (response.statusCode >= 400) {
+				var errors = '';
+				if (body.errors) {
+					for (var i = 0; i < body.errors.length; i++) {
+						for (var key in body.errors[i]) {
+							errors += '\t' + key + ': ' + body.errors[i][key] + '\n';
+						}
+					}
+				}
+				throw new Error(body.message + '(' + response.statusCode + ')\n' + errors);
+			} else {
+				callback(err, body);
+			}
 		}
 	}
 }
