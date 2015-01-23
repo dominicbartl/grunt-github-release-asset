@@ -25,10 +25,20 @@ module.exports = function (grunt) {
 		var options = this.options({
 			releaseName: '{tag}'
 		});
-		var hub = new Github(options);
+
+		if (!options.repo) {
+			grunt.fail.fatal('No repository url specified.');
+		}
+
+		if (options.repo.indexOf('git@github.com') != 0) {
+			grunt.fail.fatal('Repository url is not a Github url.');
+		}
+
 		if (!options.file) {
 			grunt.fail.fatal('No file specified.');
 		}
+
+		var hub = new Github(options);
 		async.waterfall([
 
 			function (callback) {
