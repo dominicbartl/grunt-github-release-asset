@@ -59,6 +59,7 @@ The path to a single file relative to your grunt root.
 
 #### options.releaseName
 Type: `String`
+
 Default: `{tag}`
 
 The name of the release. By default it will use the tag name. `{tag}` is a placeholder and can be used inside another string.
@@ -82,6 +83,6 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-- *0.1.0* Initial release; Create a release and attach a single file.
+- **0.1.0** Initial release; Create a release and attach a single file.
 
 [1]: https://github.com/settings/applications
