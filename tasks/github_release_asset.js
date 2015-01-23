@@ -30,7 +30,7 @@ module.exports = function (grunt) {
 			grunt.fail.fatal('No repository url specified.');
 		}
 
-		if (options.repo.indexOf('git@github.com') != 0) {
+		if (options.repo.indexOf('git@github.com') !== 0) {
 			grunt.fail.fatal('Repository url is not a Github url.');
 		}
 
