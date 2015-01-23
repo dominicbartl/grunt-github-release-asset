@@ -33,7 +33,7 @@ module.exports = function (grunt) {
 				hub.getLatestTag(callback);
 			},
 			function (body, callback) {
-				if (body.length == 0) {
+				if (body.length === 0) {
 					grunt.fail.fatal('No tag was found.');
 				}
 				var tag = body[0].name;
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
 			},
 			function (body, callback) {
 				if (body.errors) {
-					var msg = body.message + (body.errors.length > 0? '(' + body.errors[0].code + ')' : '')
+					var msg = body.message + (body.errors.length > 0? '(' + body.errors[0].code + ')' : '');
 					grunt.fail.fatal(msg);
 				}
 				grunt.log.ok('Uploading asset: ' + options.file + '...');
