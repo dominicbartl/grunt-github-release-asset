@@ -1,6 +1,6 @@
 # grunt-github-release-asset [![npm version](https://badge.fury.io/js/grunt-github-release-asset.svg)](http://badge.fury.io/js/grunt-github-release-asset)
 
-> Create releases and attach assets on Girhub.
+> Create releases and attach assets on Github.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
