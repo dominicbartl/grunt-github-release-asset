@@ -45,7 +45,7 @@ module.exports = function (grunt) {
 				if (fs.existsSync(options.file)) {
 					hub.getLatestTag(callback);
 				} else {
-					grunt.fail.fatal('File doesn\'t exist (' + options.file + ')');
+					throw 'File doesn\'t exist (' + options.file + ')';
 				}
 			},
 			function (body, callback) {
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
 			function (body, callback) {
 				if (body.errors) {
 					var msg = body.message + (body.errors.length > 0? '(' + body.errors[0].code + ')' : '');
-					grunt.fail.fatal(msg);
+					throw msg;
 				}
 				grunt.log.ok('Uploading asset: ' + options.file + '...');
 				hub.uploadAsset(body.id, options.file, callback);
