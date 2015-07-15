@@ -42,18 +42,29 @@ module.exports = function (grunt) {
 		async.waterfall([
 
 			function (callback) {
-				if (fs.existsSync(options.file)) {
-					hub.getLatestTag(callback);
-				} else {
+				if (!fs.existsSync(options.file)) {
 					throw 'File doesn\'t exist (' + options.file + ')';
 				}
+				callback(null);
 			},
-			function (body, callback) {
-				if (body.length === 0) {
-					grunt.fail.fatal('No tag was found.');
+			function (callback) {
+				var tag;
+				if (!options.tag) {
+					return hub.getLatestTag(function (err, body) {
+						if (err) {
+							return callback(err);
+						}
+						try {
+							callback(null, body[0].name);
+						} catch (e) {
+							callback(new Error('No tags for this repo'));
+						}
+					});
+				} else {
+					callback(null, options.tag);
 				}
-				var tag = body[0].name;
-
+			},
+			function (tag, callback) {
 				var releaseName = format(options.releaseName, {
 					tag: tag
 				});
