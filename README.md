@@ -64,6 +64,13 @@ Default: `{tag}`
 
 The name of the release. By default it will use the tag name. `{tag}` is a placeholder and can be used inside another string.
 
+#### options.tag
+Type: `String`
+
+Default: `undefined`
+
+The tag for which ti do a release. By default, will fetch the latest tag from Github.
+
 ### Usage Examples
 
 ```js

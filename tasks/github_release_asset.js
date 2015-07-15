@@ -42,18 +42,29 @@ module.exports = function (grunt) {
 		async.waterfall([
 
 			function (callback) {
-				if (fs.existsSync(options.file)) {
-					hub.getLatestTag(callback);
+				if (!fs.existsSync(options.file)) {
+					throw 'File doesn\'t exist (' + options.file + ')';
+				}
+				callback(null);
+			},
+			function (callback) {
+				var tag;
+				if (!options.tag) {
+					return hub.getLatestTag(function (err, body) {
+						if (err) {
+							return callback(err);
+						}
+						try {
+							callback(null, body[0].name);
+						} catch (e) {
+							callback(new Error('No tags for this repo'));
+						}
+					});
 				} else {
-					grunt.fail.fatal('File doesn\'t exist (' + options.file + ')');
+					callback(null, options.tag);
 				}
 			},
-			function (body, callback) {
-				if (body.length === 0) {
-					grunt.fail.fatal('No tag was found.');
-				}
-				var tag = body[0].name;
-
+			function (tag, callback) {
 				var releaseName = format(options.releaseName, {
 					tag: tag
 				});
@@ -63,7 +74,7 @@ module.exports = function (grunt) {
 			function (body, callback) {
 				if (body.errors) {
 					var msg = body.message + (body.errors.length > 0? '(' + body.errors[0].code + ')' : '');
-					grunt.fail.fatal(msg);
+					throw msg;
 				}
 				grunt.log.ok('Uploading asset: ' + options.file + '...');
 				hub.uploadAsset(body.id, options.file, callback);
