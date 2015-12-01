@@ -91,7 +91,7 @@ module.exports = function (grunt) {
 
 				tasks.push(function(_callback){
 					_callback()
-					callback()
+					callback(null,body)
 				})
 
 				async.waterfall(tasks)
