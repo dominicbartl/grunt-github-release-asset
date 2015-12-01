@@ -81,13 +81,13 @@ module.exports = function (grunt) {
 				var tasks = []
 
 				options.files.forEach(function(file){
-					tasks.push(function(_callback){
+					tasks.push(function(_body, _callback){
 						grunt.log.ok('Uploading asset: ' + file + '...');
 						hub.uploadAsset(body.id, file, _callback);
 					})
 				});
 
-				tasks.push(function(_callback){
+				tasks.push(function(_body, _callback){
 					_callback()
 					callback()
 				})
