@@ -34,17 +34,19 @@ module.exports = function (grunt) {
 			grunt.fail.fatal('Repository url is not a Github url.');
 		}
 
-		if (!options.file) {
-			grunt.fail.fatal('No file specified.');
+		if (!options.files || options.files.length<1) {
+			grunt.fail.fatal('No files specified.');
 		}
 
 		var hub = new Github(options);
 		async.waterfall([
 
 			function (callback) {
-				if (!fs.existsSync(options.file)) {
-					throw 'File doesn\'t exist (' + options.file + ')';
-				}
+				options.files.forEach(function(file){
+					if (!fs.existsSync(file)) {
+						throw 'File doesn\'t exist (' + file + ')';
+					}
+				})
 				callback(null);
 			},
 			function (callback) {
@@ -76,8 +78,21 @@ module.exports = function (grunt) {
 					var msg = body.message + (body.errors.length > 0? '(' + body.errors[0].code + ')' : '');
 					throw msg;
 				}
-				grunt.log.ok('Uploading asset: ' + options.file + '...');
-				hub.uploadAsset(body.id, options.file, callback);
+				var tasks = []
+
+				options.files.forEach(function(file){
+					tasks.push(function(_callback){
+						grunt.log.ok('Uploading asset: ' + file + '...');
+						hub.uploadAsset(body.id, options.file, _callback);
+					})
+				});
+
+				tasks.push(function(_callback){
+					_callback()
+					callback()
+				})
+
+				async.waterfall(tasks)
 			},
 			function (body, callback) {
 				grunt.log.ok('Upload successful.');
