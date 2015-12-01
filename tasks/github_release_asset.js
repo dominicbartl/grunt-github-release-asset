@@ -69,7 +69,7 @@ module.exports = function (grunt) {
 					tag: tag
 				});
 				grunt.log.ok('Create release "' + releaseName + '" on tag: ' + tag);
-				hub.createRelease(tag, releaseName, '', callback);
+				hub.createRelease(tag, releaseName, options.description, callback);
 			},
 			function (body, callback) {
 				if (body.errors) {
