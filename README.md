@@ -79,7 +79,7 @@ grunt.initConfig({
     options: {
         credentials: grunt.file.readJSON('credentials.json'),
         repo: 'git@github.com:Bartinger/grunt-github-release-asset.git',
-        file: 'project_build.zip',
+        files: ['project_build.zip'],
         releaseName: 'Version {tag}'
      },
   },
