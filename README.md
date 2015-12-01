@@ -52,10 +52,10 @@ Type: `String`
 
 The git url of the repository. Must be git@github.com:user/repo.git
 
-#### options.file
-Type: `String`
+#### options.files
+Type: `Array`
 
-The path to a single file relative to your grunt root.
+The paths to a files relative to your grunt root.
 
 #### options.releaseName
 Type: `String`
