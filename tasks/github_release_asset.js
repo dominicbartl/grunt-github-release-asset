@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 				options.files.forEach(function(file){
 					tasks.push(function(_callback){
 						grunt.log.ok('Uploading asset: ' + file + '...');
-						hub.uploadAsset(body.id, options.file, _callback);
+						hub.uploadAsset(body.id, file, _callback);
 					})
 				});
 
