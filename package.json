@@ -1,7 +1,7 @@
 {
 	"name": "grunt-github-release-asset",
 	"description": "Create releases and attach assets on Girhub.",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"homepage": "https://github.com/bartinger/grunt-github-release-asset",
 	"author": {
 		"name": "Dominic Bartl",
