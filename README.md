@@ -52,10 +52,10 @@ Type: `String`
 
 The git url of the repository. Must be git@github.com:user/repo.git
 
-#### options.file
-Type: `String`
+#### options.files
+Type: `Array`
 
-The path to a single file relative to your grunt root.
+The paths to a files relative to your grunt root.
 
 #### options.releaseName
 Type: `String`
@@ -79,7 +79,7 @@ grunt.initConfig({
     options: {
         credentials: grunt.file.readJSON('credentials.json'),
         repo: 'git@github.com:Bartinger/grunt-github-release-asset.git',
-        file: 'project_build.zip',
+        files: ['project_build.zip'],
         releaseName: 'Version {tag}'
      },
   },
