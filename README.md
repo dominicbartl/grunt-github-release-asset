@@ -55,7 +55,7 @@ The git url of the repository. Must be git@github.com:user/repo.git
 #### options.files
 Type: `Array`
 
-The paths to a files relative to your grunt root.
+The paths to files, relative to your grunt root.
 
 #### options.releaseName
 Type: `String`
@@ -90,6 +90,8 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- **0.2.0** Add support for multiple files. Thanks to [Aakil Fernandes][2]
 - **0.1.0** Initial release; Create a release and attach a single file.
 
 [1]: https://github.com/settings/applications
+[2]: https://github.com/aakilfernandes
