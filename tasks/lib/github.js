@@ -68,7 +68,7 @@ Github.prototype.getLatestTag = function (callback) {
 
 Github.prototype.uploadAsset = function (releaseId, file, callback) {
 	var url = this.getRepoUploadUrl('releases/' + releaseId + '/assets');
-	var type = mime.lookup(file);
+	this.headers['content-type'] = mime.lookup(file);
 	var name = path.basename(file);
 
 	url += '?name=' + name;
