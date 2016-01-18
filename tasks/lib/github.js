@@ -41,7 +41,7 @@ var Github = function (options) {
 	}
 	this.headers['Authorization'] = 'Basic ' + (new Buffer(authStr).toString('base64'))
 	try {
-		this.repoPath = options.repo.split(':')[1].split('.')[0].toLowerCase();
+		this.repoPath = options.repo.split(':')[1].split('.').slice(0, -1).join('.').toLowerCase();
 	} catch(err) {
 		throw new Error('Repository url isn\'t provided or isn\'t valid.');
 	}
