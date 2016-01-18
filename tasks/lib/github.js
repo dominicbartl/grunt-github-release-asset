@@ -68,19 +68,17 @@ Github.prototype.getLatestTag = function (callback) {
 
 Github.prototype.uploadAsset = function (releaseId, file, callback) {
 	var url = this.getRepoUploadUrl('releases/' + releaseId + '/assets');
-	var type = mime.lookup(file);
+	this.headers['content-type'] = mime.lookup(file);
 	var name = path.basename(file);
 
 	url += '?name=' + name;
-	var formData = {
-		fileData: fs.readFileSync(file)
-	};
+
 	//fs.createReadStream(file).pipe(this._request('POST', url, undefined, callback));
 	request({
 		method: 'POST',
 		url: url,
 		headers: this.headers,
-		formData: formData
+		body: fs.readFileSync(file)
 	}, callbackWrapper(callback));
 };
 
